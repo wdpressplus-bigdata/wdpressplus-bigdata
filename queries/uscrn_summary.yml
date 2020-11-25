@@ -1,0 +1,6 @@
+table: uscrn_summary
+query: |
+  SELECT date_trunc('day', timestamp) time,
+         wbanno,
+         avg(temperature) avg_temperature
+  FROM uscrn GROUP BY 1, 2

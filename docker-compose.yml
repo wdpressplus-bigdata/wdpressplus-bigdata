@@ -1,0 +1,66 @@
+version: '3'
+services:
+  # Datamart
+  datamart:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: datamart
+      POSTGRES_USER: datamart
+      POSTGRES_PASSWORD: datamart
+
+  # Metabase
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - 13000:3000
+
+  # Hive Metastore
+  metastore:
+    image: wdpressplusbigdata/hive-metastore:latest
+    depends_on:
+      - metastore-db
+      - minio
+  metastore-db:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: metastore
+      POSTGRES_USER: metastore
+      POSTGRES_PASSWORD: metastore
+
+  # MinIO
+  minio:
+    image: minio/minio:latest
+    command: server /data
+    environment:
+      - MINIO_ACCESS_KEY=accesskey
+      - MINIO_SECRET_KEY=secretkey
+    volumes:
+      - ./data:/data
+    ports:
+      - 9000:9000
+
+  # Spark
+  spark-submit:
+    image: wdpressplusbigdata/spark:latest
+    entrypoint: spark-submit --packages org.apache.hadoop:hadoop-aws:3.2.0
+    volumes:
+      - ./scripts:/opt/scripts
+
+  # Presto
+  presto-server:
+    image: wdpressplusbigdata/presto:latest
+    depends_on:
+      - metastore
+  presto-cli:
+    image: wdpressplusbigdata/presto:latest
+    entrypoint: /opt/presto-cli --server http://presto-server:8080
+
+  # Python
+  python:
+    image: wdpressplusbigdata/python:latest
+    entrypoint: python
+    volumes:
+      - ./scripts:/opt/scripts
+  jupyter-console:
+    image: wdpressplusbigdata/python:latest
+    entrypoint: jupyter-console
