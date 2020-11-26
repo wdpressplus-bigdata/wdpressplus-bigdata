@@ -1,4 +1,5 @@
 FROM openjdk:8-jre
+LABEL org.opencontainers.image.source https://github.com/wdpressplus-bigdata/wdpressplus-bigdata
 
 WORKDIR /opt
 

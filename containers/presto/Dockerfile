@@ -1,4 +1,5 @@
 FROM openjdk:8-jre
+LABEL org.opencontainers.image.source https://github.com/wdpressplus-bigdata/wdpressplus-bigdata
 
 RUN apt-get update && apt-get install -y python && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
