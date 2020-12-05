@@ -2,11 +2,11 @@ import pathlib
 import requests
 
 def download_file(filename):
-    prefix = 'https://www1.ncdc.noaa.gov/pub/data/uscrn/products/subhourly01'
-    # prefix = 'https://github.com/wdpressplus-bigdata/uscrn/raw/main'
+    prefix = 'https://github.com/wdpressplus-bigdata/uscrn/raw/main'
+    # prefix = 'https://www1.ncdc.noaa.gov/pub/data/uscrn/products/subhourly01'
     r = requests.get(f"{prefix}/2020/{filename}")
     r.raise_for_status()
-    path = pathlib.Path('/home/ubuntu/raw')
+    path = pathlib.Path('./raw')
     path.mkdir(parents=True, exist_ok=True)
     with open(path / filename, 'wb') as f:
         f.write(r.content)
