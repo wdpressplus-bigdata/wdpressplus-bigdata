@@ -3,8 +3,6 @@ from prefect.engine.results import S3Result
 from prefect.engine.executors.dask import LocalDaskExecutor
 from prefect.environments.execution.local import LocalEnvironment
 from prefect.environments.storage import Docker
-from prefect.schedules import Schedule
-from prefect.schedules.clocks import CronClock
 
 
 # download
@@ -31,8 +29,6 @@ flow.result = S3Result(
         'aws_secret_access_key': 'secretkey',
     },
 )
-
-flow.schedule = Schedule(clocks=[CronClock("0 0 * * *")])
 
 flow.register(project_name="My Project", labels=['docker'])
 
