@@ -11,8 +11,7 @@ from prefect.engine.executors.dask import LocalDaskExecutor
 @task
 def get_filenames():
     year = prefect.context.yesterday[:4]
-    url = 'https://github.com/wdpressplus-bigdata/uscrn/raw/main/stations.tsv'
-    # url = 'https://www1.ncdc.noaa.gov/pub/data/uscrn/products/stations.tsv'
+    url = 'https://www1.ncdc.noaa.gov/pub/data/uscrn/products/stations.tsv'
     df = pd.read_csv(url, delimiter='\t', header=None)
     result = []
     for _, row in df.loc[df[12]=='Operational'].iterrows():
@@ -26,8 +25,7 @@ def get_filenames():
 @task(max_retries=1, retry_delay=datetime.timedelta(seconds=60))
 def download_file(filename):
     year = prefect.context.yesterday[:4]
-    prefix = 'https://github.com/wdpressplus-bigdata/uscrn/raw/main'
-    # prefix = 'https://www1.ncdc.noaa.gov/pub/data/uscrn/products/subhourly01'
+    prefix = 'https://www1.ncdc.noaa.gov/pub/data/uscrn/products/subhourly01'
     r = requests.get(f"{prefix}/{year}/{filename}", stream=True)
     r.raise_for_status()
     minio_params = {
