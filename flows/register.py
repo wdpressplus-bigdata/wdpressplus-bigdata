@@ -38,7 +38,7 @@ flow.register(project_name="My Project", labels=['docker'])
 from flows.warehouse import flow
 
 flow.storage = Docker(
-    base_image='ghcr.io/wdpressplus-bigdata/spark:latest',
+    base_image='wdpbigdata/spark:latest',
     files={
       abspath('scripts/warehouse.py'): '/opt/scripts/warehouse.py',
     },
@@ -52,7 +52,7 @@ flow.register(project_name="My Project", labels=['docker'])
 from flows.datamart import flow
 
 flow.storage = Docker(
-    base_image='ghcr.io/wdpressplus-bigdata/python:latest',
+    base_image='wdpbigdata/python:latest',
     python_dependencies=[
       'pandas',
       'pyhive',
