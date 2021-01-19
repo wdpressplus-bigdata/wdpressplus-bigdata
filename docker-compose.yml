@@ -16,7 +16,7 @@ services:
 
   # Hive Metastore
   metastore:
-    image: ghcr.io/wdpressplus-bigdata/hive-metastore:latest
+    image: wdpbigdata/hive-metastore:latest
     depends_on:
       - metastore-db
       - minio
@@ -41,26 +41,26 @@ services:
 
   # Spark
   spark-submit:
-    image: ghcr.io/wdpressplus-bigdata/spark:latest
+    image: wdpbigdata/spark:latest
     entrypoint: spark-submit --packages org.apache.hadoop:hadoop-aws:3.2.0
     volumes:
       - ./scripts:/opt/scripts
 
   # Presto
   presto-server:
-    image: ghcr.io/wdpressplus-bigdata/presto:latest
+    image: wdpbigdata/presto:latest
     depends_on:
       - metastore
   presto-cli:
-    image: ghcr.io/wdpressplus-bigdata/presto:latest
+    image: wdpbigdata/presto:latest
     entrypoint: /opt/presto-cli --server http://presto-server:8080
 
   # Python
   python:
-    image: ghcr.io/wdpressplus-bigdata/python:latest
+    image: wdpbigdata/python:latest
     entrypoint: python
     volumes:
       - ./scripts:/opt/scripts
   jupyter-console:
-    image: ghcr.io/wdpressplus-bigdata/python:latest
+    image: wdpbigdata/python:latest
     entrypoint: jupyter-console
